@@ -470,6 +470,7 @@ mp(["広い遊び橋","遊び坂"],"8,9,16,17,19,24");
 mp(["バランスボード（N型）"],"8,9,11,14,15,22,23");
 mp(["バランスボード（Ⅱ型）"],"8,9,11,14,15,16,17");
 mp(["スイングサポートフレーム"],"8,9,24");
+mp(["スペースローリン"],"r,3-10,15-17,19,24");
 var ROPEHTML='<div class="card"><div class="t">ロープの本数</div><div class="c">本数に合わせて選択（1本もの／2本もの）</div><div class="seg"><label><input type="radio" name="rope" value="1" checked><span class="g">1本もの</span></label><label><input type="radio" name="rope" value="2"><span class="g">2本もの</span></label></div></div>';
 function ropeOn(p){return!!p&&p.indexOf("トランポリン")!==0&&(MAP[p]||"r,3-27").split(",")[0]==="r"}
 function idl(m,rope){var o=[];m.split(",").forEach(function(t){if(t==="r")o.push(rope==="2"?2:1);else if(t.indexOf("-")>0){var a=t.split("-");for(var n=+a[0];n<=+a[1];n++)o.push(n)}else o.push(+t)});return o}
