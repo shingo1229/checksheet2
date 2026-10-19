@@ -641,6 +641,7 @@ async function genPdf(D0){
  its.forEach(function(it,i){var ix=SHEETS[type].items.indexOf(it),r=G.rows[ix];if(ix<0||!r)return;var rr=d.rows[i],v=rr[2],cm=rr[3],qb=CK["Q"+r].b,fz=Math.min(14,Math.max(7,Math.floor((qb[2]-qb[0])/K/5.2))),q=G.q[r];got[r]=1;
   if(v==="良"&&q){var c=q.good,w=c[2]-c[0],h=c[3]-c[1];ell((c[0]+c[2])/2-1.5,(c[1]+c[3])/2,w*.5+4.5,Math.min(h*.5+8.5,(qb[3]-qb[1])/2-2),2)}
   else if(v==="不良"&&q){var c=q.bad,w=c[2]-c[0],h=c[3]-c[1];ell((c[0]+c[2])/2+1,(c[1]+c[3])/2,w*.5+8,Math.min(h*.5+8.5,(qb[3]-qb[1])/2-2),2)}
+  else if(v==="該当なし"){wipe("Q"+r);put("Q"+r,"―",{sz:fz,bold:false})}
   else if(v&&it[3]==="gen"&&G.gq&&G.gq[r]){var gq=G.gq[r];v.split("、").forEach(function(n){var c=gq[n];if(!c)return;var w=c[2]-c[0],h=c[3]-c[1],cx=(c[0]+c[2])/2,cy=(c[1]+c[3])/2;if(w>h*1.6)ell(cx,cy,w/2+8,h/2+4.5,2);else ell(cx,cy,w/2+9,h/2+4.5,2)})}
   else if(v){wipe("Q"+r);put("Q"+r,v,{sz:fz,bold:false})}
   mk(it,r,v)});
