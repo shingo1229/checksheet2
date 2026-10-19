@@ -626,7 +626,7 @@ async function genPdf(D0){
     if(t.indexOf("{色}")>=0&&o[j]){String(o[j]).split("、").forEach(function(c){for(var a2=e;a2<Math.min(sc.t.length,e+14);a2++){if(sc.t[a2]===c){circC(sc.b[a2]);break}}})}})}
   else Object.keys(o).forEach(function(j){var t=L[j];if(t)extra.push("・"+t.replace("{}",o[j]).replace("{色}",o[j]))});
   if(sc&&D0.spec&&it[1]==="縫製にほつれがない"){var si=sc.t.indexOf(D0.spec);if(si>=0){var b0=sc.b[si],b1=sc.b[si+D0.spec.length-1],hh2=b0[3]-b0[1];ell((b0[0]+b1[2])/2,(b0[1]+b0[3])/2,(b1[2]-b0[0])/2+hh2*.3,hh2*.6)}}
-  var tb=D0.v[q+"#tube"]||"";if(it[1]==="熱収縮チューブが付いている"&&tb&&v!=="該当なし"){var tp=G.tube[r];if(tp&&tp[tb])circC(tp[tb]);else extra.unshift("チューブ色："+tb)}
+  var tb=D0.v[q+"#tube"]||"";if(it[1]==="熱収縮チューブが付いている"&&tb&&v!=="該当なし"){var tp=G.tube[r]||{},tmiss=[];tb.split("、").forEach(function(c){c=c.trim();if(!c)return;if(tp[c])circC(tp[c]);else tmiss.push(c)});if(tmiss.length)extra.unshift("チューブ色："+tmiss.join("、"))}
   var fc=(D0.c[q]||"");if(fc)extra.push(fc);
   if(!extra.length)return;var txt=extra.join("\n"),w=cb[2]-cb[0]-16,sz=fz,ln,top=lastB+2,avail=cb[3]-2-top;if(avail<fz*1.3){BK.push((it[1]?"・"+it[1]+"：":"")+txt.replace(/\n/g," "));return}
   for(;;){g.font=sz+"px "+FF;ln=wrapT(txt,w);if(ln.length*sz*1.2<=avail||sz<=fz*.5)break;sz-=.5}
