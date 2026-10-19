@@ -687,19 +687,21 @@ async function genPdf(D0){
  var nm0=1;
  if(ph.length){var c3=document.createElement("canvas");c3.width=G.W;c3.height=G.H;var q=c3.getContext("2d");q.fillStyle="#fff";q.fillRect(0,0,G.W,G.H);
   var bb=(function(){var k=4,w=Math.floor(G.W/k),h2=Math.floor(G.H/k),t=document.createElement("canvas");t.width=w;t.height=h2;var tg=t.getContext("2d");tg.drawImage(cv,0,0,w,h2);var d=tg.getImageData(0,0,w,h2).data,x0=w,x1=0,y0=h2,y1=0;for(var yy=0;yy<h2;yy++)for(var xx=0;xx<w;xx++){var o=(yy*w+xx)*4;if(d[o]+d[o+1]+d[o+2]<600){if(xx<x0)x0=xx;if(xx>x1)x1=xx;if(yy<y0)y0=yy;if(yy>y1)y1=yy}}return x1>x0?[x0*k-4,y0*k-4,(x1+1)*k+4,(y1+1)*k+4]:[0,0,G.W,G.H]})();
-  var gp=18,hd=34,cap=30,bm=30,Wc=bb[2]-bb[0],Hc=bb[3]-bb[1],top=Math.max(20,bb[1]),sc=Math.min(1,(G.H-top-gp-hd-4-cap-bm+3*gp*.1875)/(Hc+.1875*Wc)),sw=Wc*sc,sh=Hc*sc,x0=(G.W-sw)/2,pw=(sw-3*gp)/4,phh=pw*.75;
+  var gp=22,lh=40,lw=86,bm=30,pd=7,Wc=bb[2]-bb[0],Hc=bb[3]-bb[1],top=Math.max(20,bb[1]),sc=Math.min(1,(G.H-top-gp-lh-bm-2*pd+.75*2*pd+.1875*lw)/(Hc+.1875*Wc)),sw=Wc*sc,sh=Hc*sc,x0=(G.W-sw)/2,cw=(sw-lw)/4,pw=cw-2*pd,phh=pw*.75,rh=phh+2*pd;
   q.imageSmoothingQuality="high";q.drawImage(cv,bb[0],bb[1],Wc,Hc,x0,top,sw,sh);
-  var y1=top+sh+gp;q.fillStyle="#111";q.textBaseline="middle";q.textAlign="left";q.font="bold 22px "+FF;q.fillText("写真"+(ph.length>4?"（続きは別紙）":""),x0+8,y1+hd/2);q.fillRect(x0,y1+hd-3,sw,2);
-  var y2=y1+hd+4;
-  for(var i=0;i<Math.min(4,ph.length);i++){var im=await loadImg(ph[i]),cx=x0+i*(pw+gp);q.fillStyle="#f3f3f3";q.fillRect(cx,y2,pw,phh);if(im)coverDraw(q,im,cx,y2,pw,phh);q.strokeStyle="#888";q.lineWidth=1.5;q.strokeRect(cx,y2,pw,phh);q.fillStyle="#111";q.font="bold 20px "+FF;q.textAlign="center";q.fillText(labs[i]||"",cx+pw/2,y2+phh+cap/2);q.textAlign="left"}
+  var y1=top+sh+gp,y2=y1+lh;q.strokeStyle="#000";q.fillStyle="#000";q.lineWidth=2;q.textBaseline="middle";q.textAlign="center";
+  q.strokeRect(x0,y1,sw,lh+rh);q.beginPath();q.moveTo(x0+lw,y2);q.lineTo(x0+sw,y2);for(var k2=0;k2<4;k2++){q.moveTo(x0+lw+k2*cw,y1);q.lineTo(x0+lw+k2*cw,y1+lh+rh)}q.stroke();
+  q.font="24px "+FF;if(ph.length>4){q.fillText("写真",x0+lw/2,y1+(lh+rh)/2-16);q.font="15px "+FF;q.fillText("（続きは",x0+lw/2,y1+(lh+rh)/2+14);q.fillText("別紙）",x0+lw/2,y1+(lh+rh)/2+34)}else q.fillText("写真",x0+lw/2,y1+(lh+rh)/2);
+  for(var i=0;i<4;i++){var cx=x0+lw+i*cw;q.font="22px "+FF;q.fillStyle="#000";if(labs[i]&&i<ph.length)q.fillText(labs[i],cx+cw/2,y1+lh/2+1);if(i<ph.length){var im=await loadImg(ph[i]);if(im)coverDraw(q,im,cx+pd,y2+pd,pw,phh);q.lineWidth=1;q.strokeStyle="#999";q.strokeRect(cx+pd,y2+pd,pw,phh);q.strokeStyle="#000";q.lineWidth=2}}
+  q.textAlign="left";
   pgs[0]=c3.toDataURL("image/jpeg",.9)}
  var hp=ph.length>0;ph=ph.slice(4);var poff=4;
  if(ph.length){var c2=document.createElement("canvas");c2.width=G.W;c2.height=G.H;var h=c2.getContext("2d"),u=G.W/794,n=ph.length,cols=n<=8?2:3,rws=n<=6?3:n<=8?4:4;
   if(n>8)cols=3;h.fillStyle="#fff";h.fillRect(0,0,G.W,G.H);h.fillStyle="#111";h.textBaseline="alphabetic";h.textAlign="left";
   h.font=""+18*u+"px "+FF;h.fillText("別紙　写真",40*u,62*u);h.fillRect(40*u,70*u,714*u,2*u);h.font=13*u+"px "+FF;
   h.fillText([fac,D0.room||"",room?"":(D0.product||""),"点検日 "+($("date").value||"")].filter(Boolean).join("　／　"),40*u,94*u);
-  var gap=14,rowN=Math.ceil(n/cols),cw=Math.floor((714-gap*(cols-1))/cols),ch=Math.min(Math.floor(cw*.75),Math.floor((940-rowN*(22+gap))/rowN));cw=Math.floor(ch/.75);var gx=40+(714-(cw*cols+gap*(cols-1)))/2;
-  for(var i=0;i<n;i++){var im=await loadImg(ph[i]),cx=gx+(i%cols)*(cw+gap),cy=110+Math.floor(i/cols)*(ch+22+gap);if(im)coverDraw(h,im,cx*u,cy*u,cw*u,ch*u);h.strokeStyle="#999";h.lineWidth=u;h.strokeRect(cx*u,cy*u,cw*u,ch*u);h.font="bold "+13*u+"px "+FF;h.fillStyle="#111";h.fillText(labs[i+poff]||"",cx*u,(cy+ch+16)*u)}
+  var gap=12,LH=22,PD=4,rowN=Math.ceil(n/cols),cw=Math.floor((714-gap*(cols-1))/cols),ch=Math.min(Math.floor((cw-2*PD)*.75),Math.floor((940-rowN*(LH+2*PD+gap))/rowN));cw=Math.floor(ch/.75)+2*PD;var gx=40+(714-(cw*cols+gap*(cols-1)))/2;
+  for(var i=0;i<n;i++){var im=await loadImg(ph[i]),cx=gx+(i%cols)*(cw+gap),cy=110+Math.floor(i/cols)*(LH+ch+2*PD+gap);h.strokeStyle="#000";h.lineWidth=1.2*u;h.strokeRect(cx*u,cy*u,cw*u,(LH+ch+2*PD)*u);h.beginPath();h.moveTo(cx*u,(cy+LH)*u);h.lineTo((cx+cw)*u,(cy+LH)*u);h.stroke();h.font=12*u+"px "+FF;h.fillStyle="#000";h.textAlign="center";h.textBaseline="middle";h.fillText(labs[i+poff]||"",(cx+cw/2)*u,(cy+LH/2+.5)*u);h.textAlign="left";h.textBaseline="alphabetic";if(im)coverDraw(h,im,(cx+PD)*u,(cy+LH+PD)*u,(cw-2*PD)*u,ch*u);h.strokeStyle="#999";h.lineWidth=.6*u;h.strokeRect((cx+PD)*u,(cy+LH+PD)*u,(cw-2*PD)*u,ch*u)}
   pgs.push(c2.toDataURL("image/jpeg",.9))}
  var P=new window.jspdf.jsPDF({unit:"pt",format:"a4"});pgs.forEach(function(u,i){if(i)P.addPage();P.addImage(u,"JPEG",0,0,595.28,841.89)});
  var bl=P.output("blob");bl.pages=pgs;bl.nm=nm0;bl.np=np;bl.hp=hp;return bl}
